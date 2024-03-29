@@ -1,5 +1,6 @@
 package com.example.test.entity;
 
+import com.example.test.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,8 @@ public class User {
     private Long id;
     private String name;
     private String username;
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
     private String password;
     @ManyToMany(fetch = EAGER)
     private Collection<Role> roles = new ArrayList<>();

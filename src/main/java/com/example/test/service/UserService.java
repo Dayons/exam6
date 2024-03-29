@@ -17,4 +17,9 @@ public interface UserService {
     User getUser(String username);
 
     List<User> getUsers();
+
+    void createUser(User user);
+    void blockUserById(Long id);
+    void deleteUserByUserId(Long id);
+    void unblockUserByUserId(Long id);
 }

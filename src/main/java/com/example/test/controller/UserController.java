@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -35,6 +36,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
 
 
     @PostAuthorize(value = "")
@@ -97,6 +99,30 @@ public class UserController {
         } else {
             throw new RuntimeException("Токен не удалось обновить");
         }
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        userService.createUser(user);
+        return ResponseEntity.ok("Пользователь создан");
+    }
+
+    @PostMapping("/block/{id}")
+    public ResponseEntity<?> blockUserById(@PathVariable Long id) {
+        userService.blockUserById(id);
+        return ResponseEntity.ok("Пользователь заблокирован");
+    }
+
+    @PostMapping("/unblock/{id}")
+    public ResponseEntity<?> unblockUserById(@PathVariable Long id) {
+        userService.unblockUserByUserId(id);
+        return ResponseEntity.ok("Пользователь разблокирован");
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
+        userService.deleteUserByUserId(id);
+        return ResponseEntity.ok("Пользователь удален");
     }
 }
 

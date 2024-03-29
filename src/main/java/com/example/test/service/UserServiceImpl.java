@@ -2,6 +2,7 @@ package com.example.test.service;
 
 import com.example.test.entity.Role;
 import com.example.test.entity.User;
+import com.example.test.enums.Status;
 import com.example.test.repository.RoleRepo;
 import com.example.test.repository.UserRepo;
 import jakarta.transaction.Transactional;
@@ -66,4 +67,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> getUsers() {
         return userRepo.findAll();
     }
+
+    @Override
+    public void createUser(User user) {
+        userRepo.save(user);
+    }
+
+    @Override
+    public void blockUserById(Long id) {
+        User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setStatus(Status.BLOCKED);
+        userRepo.save(user);
+    }
+
+    @Override
+    public void deleteUserByUserId(Long id) {
+        User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setStatus(Status.DELETED);
+        userRepo.save(user);
+    }
+
+    @Override
+    public void unblockUserByUserId(Long id) {
+        User user = userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setStatus(Status.ACTIVE);
+        userRepo.save(user);
+    }
+
 }
